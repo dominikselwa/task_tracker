@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+    <h1>Welcome in Task Tracker</h1>
+
+    <h2>Your tasks are:</h2>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <a href="{% url 'task_detail' task.id %}">
+                    {{ task.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'add_task' %}">
+        Add new task
+    </a>
+{% endblock %}

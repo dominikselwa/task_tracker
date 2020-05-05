@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Task: {{task.name}}{% endblock %}
+
+{% block content %}
+    <h1>{{task.name}}</h1>
+    <p>Task description:</p>
+        {{task.description}}
+    <p>Task start date:</p>
+        {{task.start_date}}
+    <p>Task deadline:</p>
+        {{task.deadline_date}}
+    <p>
+    {% if task.parent_task %}
+        <p>Parent task:</p>
+            {{task.parent_task}}
+        <p>
+    {% else %}
+        <ul>
+            {% for subtask in subtasks %}
+                <li>
+                    <a href="{% url 'task_detail' subtask.id %}">
+                        {{ subtask.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
+
+
+    <button>
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+    </button>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+    </form>
+    </p>
+    <a href="{% url 'add_subtask' task.id %}">
+        Add subtask
+    </a>
+{% endblock %}
