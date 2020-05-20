@@ -3,6 +3,14 @@ from django.forms import modelform_factory
 
 from .models import Task
 
+from .serializers import TaskSerializer
+from rest_framework import generics
+
+
+class TaskListCreate(generics.ListCreateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
 
 def task_details(request, id):
     task = get_object_or_404(Task, pk=id)
@@ -13,7 +21,8 @@ def task_details(request, id):
                   {'task': task, 'subtasks': Task.objects.filter(parent_task=Task(pk=id))})
 
 
-TaskForm = modelform_factory(Task, exclude=['end_date', 'is_completed', 'parent_task'])
+TaskForm = modelform_factory(
+    Task, exclude=['end_date', 'is_completed', 'parent_task'])
 
 
 def add_task(request):
@@ -40,5 +49,3 @@ def add_subtask(request, id):
         form = TaskForm()
     return render(request, 'tasks/add_task.html',
                   {'form': form})
-
-
